@@ -1,0 +1,16 @@
+.feedbackContainer {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding-top: 100px;
+}
+
+.statisticContainer {
+  display: flex;
+  flex-direction: column;
+}
+
+button {
+  margin-bottom: 10px;
+}
