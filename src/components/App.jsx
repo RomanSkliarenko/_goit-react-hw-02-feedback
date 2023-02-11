@@ -1,47 +1,45 @@
-import React from 'react';
-import Statistic from './statistic';
-import FeedbackOptions from './feedbackOptions';
+import React, { useState } from 'react';
 import Section from './section';
+import FeedbackOptions from './feedbackOptions';
+import Statistic from './statistic';
 import styles from '../styles/feedback.module.scss';
 
+const App = () => {
+  const [good, setGood] = useState(0);
+  const [neutral, setNeutral] = useState(0);
+  const [bad, setBad] = useState(0);
 
-class App extends React.Component {
-  state = {
-    good: 0,
-    neutral: 0,
-    bad: 0,
-  };
-  updateStatistic = (e) => {
-    this.setState((prevState) => {
-      return {
-        [e.target.name]: prevState[e.target.name] + 1,
-      };
-    });
+  const updateStatistic = (e) => {
+    if (e.target.name === 'good') {
+      setGood(good + 1);
+    }
+    if (e.target.name === 'neutral') {
+      setNeutral(neutral + 1);
+    }
+    if (e.target.name === 'bad') {
+      setBad(bad + 1);
+    }
   };
 
-  totalFeedback() {
-    const { good, neutral, bad } = this.state;
+  const totalFeedback = () => {
     return good + neutral + bad;
-  }
+  };
 
-  positiveFeedback() {
-    const { good } = this.state;
-    return Math.round((good / this.totalFeedback()) * 100);
-  }
+  const positiveFeedback = () => {
+    return Math.round((good / totalFeedback()) * 100);
+  };
 
-  render() {
-    return (
-      <div className={styles.feedbackContainer}>
-        <Section title='Please leave feedback'>
-          <FeedbackOptions updateStatistic={this.updateStatistic} options={Object.keys(this.state)}/>
-        </Section>
-        <Section title='Statistic'>
-          <Statistic {...this.state} total={this.totalFeedback()}
-                     positivePercentage={this.positiveFeedback()} />
-        </Section>
-      </div>
-    );
-  }
-}
+  return (
+    <div className={styles.feedbackContainer}>
+      <Section title='Please leave feedback'>
+        <FeedbackOptions updateStatistic={updateStatistic} options={['good', 'neutral', 'bad']} />
+      </Section>
+      <Section title='Statistic'>
+        <Statistic good={good} bad={bad} neutral={neutral} total={totalFeedback()}
+                   positivePercentage={positiveFeedback()} />
+      </Section>
+    </div>
+  );
+};
 
 export default App;
